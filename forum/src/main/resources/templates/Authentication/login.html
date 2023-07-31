@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.springframework.org/security" xmlns:th="http://www.thymeleaf.org">
+<head><title>Home | Social Forum</title>
+
+    <!-- General CSS File -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.12/sweetalert2.min.css" rel="stylesheet" >
+<!--     <link href="/static/Home _ UPSDM LMS_files/jquery.toast.min.css" rel="stylesheet" th:href="@{/Home _ UPSDM LMS_files/jquery.toast.min.css}">
+ -->    
+<!--  <link href="/static/Home _ UPSDM LMS_files/simplebar.css" rel="stylesheet" th:href="@{/Home _ UPSDM LMS_files/simplebar.css}">
+ -->    
+ <link href="/static/css/app.css" rel="stylesheet" th:href="@{/css/app.css}">
+<!--    <link href="/static/Home _ UPSDM LMS_files/flags.css" rel="stylesheet"-->
+<!--          th:href="@{/Home _ UPSDM LMS_files/flags.css}">-->
+
+
+<!--   <link href="/static/Home _ UPSDM LMS_files/swiper-bundle.min.css" rel="stylesheet" th:href="@{/Home _ UPSDM LMS_files/swiper-bundle.min.css}">
+       <link href="/static/Home _ UPSDM LMS_files/owl.carousel.min.css" rel="stylesheet" th:href="@{/Home _ UPSDM LMS_files/owl.carousel.min.css}">
+       <link href="/static/Home _ UPSDM LMS_files/bootstrap.min.css" rel="stylesheet" th:href="@{/Home _ UPSDM LMS_files/bootstrap.min.css}"> -->
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="/static/css/lmsHome.css" rel="stylesheet" th:href="@{/css/lmsHome.css}">
+    <link th:href="@{/css/login.css}" rel="stylesheet"></head>
+<body class="  pace-done">
+<div id="app">
+    <div class="container-fluid">
+      <div class="containerLogin" id="container" >
+        <div class="form-container sign-up-container">
+          <form class="loginForm row" style="flex-direction: row" method="post" th:action="@{/social/createUser}" onsubmit="validateForms(this)" enctype="multipart/form-data">
+            <div class="col-12">
+              <label>Full Name</label>
+              <input placeholder="Full Name" type="text" name="userInfo.fullName" required/>
+            </div>
+            <div class="col-12">
+              <label>Email Id</label>
+              <input placeholder="Email Id" type="email" name="userInfo.emailId" required onfocusout="checkemail(this)"/>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+              <label>Username</label>
+              <input placeholder="Username"  id=username type="text" name="username" required onfocusout="checkusername()"/>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+              <label>Password</label>
+              <input placeholder="Password" type="password" name="password" required/>
+            </div>
+             <div class="col-6">
+              <label>Phone No</label>
+              <input placeholder="Phone No" pattern="[0-9]*" type="text" name="userInfo.phoneNo" onfocusout='validatePhoneNo(this)' required/>
+            </div>
+            <div class="col-6">
+              <label>Addhar No</label>
+              <input placeholder="Address" pattern="[0-9]*" type="text" name="userInfo.addharNo" onfocusout='validateAddharNo(this)' required/>
+            </div>
+            <button>Sign Up</button>
+          </form>
+        </div>
+        <div class="form-container sign-in-container">
+          <form action="#" class="loginForm row" style="flex-direction: row" method="post" th:action="@{/perform_login}" onsubmit="validateForms(this)">
+            <h1>Log in</h1>
+            <div class="col-12">
+              <label>Username</label>
+            <input placeholder="Username" type="text" name="username" required/>
+            </div>
+              <div class="col-12">
+                <label>Password</label>
+            <input placeholder="Password" type="password" name="password" required/>
+              </div>
+            <a th:href="@{/lms/forgetPassword}">Forgot your password?</a>
+            <button>Log In</button>
+          </form>
+        </div>
+        <div class="overlay-container">
+          <div class="overlay">
+            <div class="overlay-panel overlay-left" style="padding: 10px;">
+              <h1>Create Account</h1>
+               <h2 class="mt-50">Already Have an Account ?</h2>
+<!--              <h3 >Please Login</h3>-->
+<!--              <h5 >By Clicking on LogIn</h5>-->
+              <button class="ghost" id="signIn">Log In</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+              <h1>Welcome Back!</h1>
+              <p>To keep connected with us please login with your info</p>
+              <h2 class="mt-50">New User ?</h2>
+<!--              <h3 >Please Register</h3>-->
+<!--              <h5 >By Clicking on Sign Up</h5>-->
+              <button class="ghost" id="signUp">Sign Up</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+<!-- <div th:insert="~{fragment/header.html :: js}"></div>
+ --><!-- <script th:src="@{/js/formValidationScript.js}"></script> -->
+<script>
+  const signUpButton = document.getElementById('signUp');
+  const signInButton = document.getElementById('signIn');
+  const container = document.getElementById('container');
+
+  signUpButton.addEventListener('click', () => {
+    container.classList.add("right-panel-active");
+  });
+
+  signInButton.addEventListener('click', () => {
+    container.classList.remove("right-panel-active");
+  });
+</script>
+<script>
+  function previewFile() {
+    const fileInput = document.getElementById('fileInput');
+    const previewImage = document.getElementById('previewImage');
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = function () {
+      previewImage.src = reader.result;
+      previewImage.style.display = 'block';
+    }
+
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      previewImage.src = '';
+      previewImage.style.display = 'none';
+    }
+  }
+</script>
+
+
+</body>
+</html>
